@@ -4,14 +4,14 @@ from flask import Flask, render_template, request
 from dotenv import load_dotenv
 from openai import OpenAI
 
-# Load environment variables
+
 load_dotenv()
 
 app = Flask(__name__)
 
-# =========================
+
 # OpenRouter Client Setup
-# =========================
+
 client = OpenAI(
     api_key=os.getenv("OPENROUTER_API_KEY"),
     base_url="https://openrouter.ai/api/v1",
@@ -21,9 +21,9 @@ client = OpenAI(
     }
 )
 
-# =========================
+
 # YouTube Metadata Fetcher
-# =========================
+
 def get_video_metadata(url):
     ydl_opts = {
         "quiet": True,
@@ -41,9 +41,9 @@ def get_video_metadata(url):
         "tags": info.get("tags", []) or []
     }
 
-# =========================
+
 # OpenRouter AI Processing
-# =========================
+
 def ai_summary_and_concepts(meta):
     prompt = f"""
 You are an expert teacher.
@@ -78,9 +78,9 @@ Description: {meta['description']}
 
     return response.choices[0].message.content
 
-# =========================
+
 # Flask Routes
-# =========================
+
 @app.route("/", methods=["GET", "POST"])
 def index():
     output = ""
@@ -115,8 +115,7 @@ def index():
         error=error
     )
 
-# =========================
+
 # App Entry Point
-# =========================
 if __name__ == "__main__":
     app.run(debug=True)
